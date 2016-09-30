@@ -1,0 +1,14 @@
+{
+  "name": "videojs-open",
+  "author": "open-liyanan &lt;20137848@qq.com&gt;",
+  "license": "MIT",
+  "main": [
+    "dist/videojs-open.css",
+    "dist/videojs-open.min.js"
+  ],
+  "keywords": [
+    "videojs",
+    "videojs-plugin"
+  ]
+}
+
