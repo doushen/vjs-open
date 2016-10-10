@@ -37,7 +37,11 @@ const open = function(options) {
 	});
 };
 
-// 分辨率
+/**
+ * 分辨率
+ * @param {[type]} options [description]
+ * return {[type]}  [description]
+ */
 const videoJsResolutionSwitcher = function(options) {
 
 	/**
@@ -436,7 +440,11 @@ const videoJsResolutionSwitcher = function(options) {
 
 };
 
-// 禁用滚动条拖动
+/**
+ * 禁用滚动条拖动
+ * @param {[type]} options [description]
+ * return {[type]}  [description]
+ */
 const disableProgress = function(options) {
 	var
 	/**
@@ -495,7 +503,11 @@ const disableProgress = function(options) {
 	}
 };
 
-// 打点
+/**
+ * 打点
+ * @param {[type]} options [description]
+ * return {[type]}  [description]
+ */
 const markers = function(options) {
 	//default setting
 	var defaultSetting = {
@@ -880,7 +892,11 @@ const markers = function(options) {
 
 };
 
-// 水印
+/**
+ * 水印
+ * @param {[type]} options [description]
+ * return {[type]}  [description]
+ */
 const waterMark = function(options) {
 	var defaults = {
 			file: 'Owned_Stamp.png',
