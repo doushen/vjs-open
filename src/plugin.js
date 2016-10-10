@@ -36,93 +36,15 @@ const open = function(options) {
 		onPlayerReady(this, videojs.mergeOptions(defaults, options));
 	});
 };
+
 // 分辨率
 const videoJsResolutionSwitcher = function(options) {
-	var videoJsResolutionSwitcher,
-		defaults = {
-			ui: true
-		};
-
-	/*
-	 * Resolution menu item
-	 */
-	var MenuItem = videojs.getComponent('MenuItem');
-	var ResolutionMenuItem = videojs.extend(MenuItem, {
-		constructor: function(player, options) {
-			options.selectable = true;
-			// Sets this.player_, this.options_ and initializes the component
-			MenuItem.call(this, player, options);
-			this.src = options.src;
-
-			player.on('resolutionchange', videojs.bind(this, this.update));
-		}
-	});
-	ResolutionMenuItem.prototype.handleClick = function(event) {
-		MenuItem.prototype.handleClick.call(this, event);
-		this.player_.currentResolution(this.options_.label);
-	};
-	ResolutionMenuItem.prototype.update = function() {
-		var selection = this.player_.currentResolution();
-		this.selected(this.options_.label === selection.label);
-	};
-	MenuItem.registerComponent('ResolutionMenuItem', ResolutionMenuItem);
-
-	/*
-	 * Resolution menu button
-	 */
-	var MenuButton = videojs.getComponent('MenuButton');
-	var ResolutionMenuButton = videojs.extend(MenuButton, {
-		constructor: function(player, options) {
-			this.label = document.createElement('span');
-			options.label = 'Quality';
-			// Sets this.player_, this.options_ and initializes the component
-			MenuButton.call(this, player, options);
-			this.el().setAttribute('aria-label', 'Quality');
-			this.controlText('Quality');
-
-			if (options.dynamicLabel) {
-				videojs.addClass(this.label, 'vjs-resolution-button-label');
-				this.el().appendChild(this.label);
-			} else {
-				var staticLabel = document.createElement('span');
-				videojs.addClass(staticLabel, 'vjs-menu-icon');
-				this.el().appendChild(staticLabel);
-			}
-			player.on('updateSources', videojs.bind(this, this.update));
-		}
-	});
-	ResolutionMenuButton.prototype.createItems = function() {
-		var menuItems = [];
-		var labels = (this.sources && this.sources.label) || {};
-
-		// FIXME order is not guaranteed here.
-		for (var key in labels) {
-			if (labels.hasOwnProperty(key)) {
-				menuItems.push(new ResolutionMenuItem(
-					this.player_, {
-						label: key,
-						src: labels[key],
-						selected: key === (this.currentSelection ? this.currentSelection.label : false)
-					}));
-			}
-		}
-		return menuItems;
-	};
-	ResolutionMenuButton.prototype.update = function() {
-		this.sources = this.player_.getGroupedSrc();
-		this.currentSelection = this.player_.currentResolution();
-		this.label.innerHTML = this.currentSelection ? this.currentSelection.label : '';
-		return MenuButton.prototype.update.call(this);
-	};
-	ResolutionMenuButton.prototype.buildCSSClass = function() {
-		return MenuButton.prototype.buildCSSClass.call(this) + ' vjs-resolution-button';
-	};
-	MenuButton.registerComponent('ResolutionMenuButton', ResolutionMenuButton);
 
 	/**
 	 * Initialize the plugin.
 	 * @param {object} [options] configuration for the plugin
 	 */
+
 	var settings = videojs.mergeOptions(defaults, options),
 		player = this,
 		groupedSrc = {},
@@ -429,7 +351,91 @@ const videoJsResolutionSwitcher = function(options) {
 		}
 	});
 
+	var videoJsResolutionSwitcher,
+		defaults = {
+			ui: true
+		};
+
+	/*
+	 * Resolution menu item
+	 */
+	var MenuItem = videojs.getComponent('MenuItem');
+	var ResolutionMenuItem = videojs.extend(MenuItem, {
+		constructor: function(player, options) {
+			options.selectable = true;
+			// Sets this.player_, this.options_ and initializes the component
+			MenuItem.call(this, player, options);
+			this.src = options.src;
+
+			player.on('resolutionchange', videojs.bind(this, this.update));
+		}
+	});
+	ResolutionMenuItem.prototype.handleClick = function(event) {
+		MenuItem.prototype.handleClick.call(this, event);
+		this.player_.currentResolution(this.options_.label);
+	};
+	ResolutionMenuItem.prototype.update = function() {
+		var selection = this.player_.currentResolution();
+		this.selected(this.options_.label === selection.label);
+	};
+	MenuItem.registerComponent('ResolutionMenuItem', ResolutionMenuItem);
+
+	/*
+	 * Resolution menu button
+	 */
+	var MenuButton = videojs.getComponent('MenuButton');
+	var ResolutionMenuButton = videojs.extend(MenuButton, {
+		constructor: function(player, options) {
+			this.label = document.createElement('span');
+			options.label = 'Quality';
+			// Sets this.player_, this.options_ and initializes the component
+			MenuButton.call(this, player, options);
+			this.el().setAttribute('aria-label', 'Quality');
+			this.controlText('Quality');
+
+			if (options.dynamicLabel) {
+				videojs.addClass(this.label, 'vjs-resolution-button-label');
+				this.el().appendChild(this.label);
+			} else {
+				var staticLabel = document.createElement('span');
+				videojs.addClass(staticLabel, 'vjs-menu-icon');
+				this.el().appendChild(staticLabel);
+			}
+			player.on('updateSources', videojs.bind(this, this.update));
+		}
+	});
+	ResolutionMenuButton.prototype.createItems = function() {
+		var menuItems = [];
+		var labels = (this.sources && this.sources.label) || {};
+
+		// FIXME order is not guaranteed here.
+		for (var key in labels) {
+			if (labels.hasOwnProperty(key)) {
+				menuItems.push(new ResolutionMenuItem(
+					this.player_, {
+						label: key,
+						src: labels[key],
+						selected: key === (this.currentSelection ? this.currentSelection.label : false)
+					}));
+			}
+		}
+		return menuItems;
+	};
+	ResolutionMenuButton.prototype.update = function() {
+		this.sources = this.player_.getGroupedSrc();
+		this.currentSelection = this.player_.currentResolution();
+		this.label.innerHTML = this.currentSelection ? this.currentSelection.label : '';
+		return MenuButton.prototype.update.call(this);
+	};
+	ResolutionMenuButton.prototype.buildCSSClass = function() {
+		return MenuButton.prototype.buildCSSClass.call(this) + ' vjs-resolution-button';
+	};
+	MenuButton.registerComponent('ResolutionMenuButton', ResolutionMenuButton);
+
+
+
 };
+
 // 禁用滚动条拖动
 const disableProgress = function(options) {
 	var
@@ -467,12 +473,14 @@ const disableProgress = function(options) {
 	player.disableProgress = {
 		disable: function() {
 			state = true;
+			player.controlBar.progressControl.seekBar.off("focus");
 			player.controlBar.progressControl.seekBar.off("mousedown");
 			player.controlBar.progressControl.seekBar.off("touchstart");
 			player.controlBar.progressControl.seekBar.off("click");
 		},
 		enable: function() {
 			state = false;
+			player.controlBar.progressControl.seekBar.on("focus", player.controlBar.progressControl.seekBar.handleFocus);
 			player.controlBar.progressControl.seekBar.on("mousedown", player.controlBar.progressControl.seekBar.handleMouseDown);
 			player.controlBar.progressControl.seekBar.on("touchstart", player.controlBar.progressControl.seekBar.handleMouseDown);
 			player.controlBar.progressControl.seekBar.on("click", player.controlBar.progressControl.seekBar.handleClick);
@@ -486,10 +494,516 @@ const disableProgress = function(options) {
 		player.disableProgress.disable();
 	}
 };
+
+// 打点
+const markers = function(options) {
+	//default setting
+	var defaultSetting = {
+		markerStyle: {
+			'width': '8px',
+			'border-radius': '20%',
+			'background-color': 'rgba(255,0,0,.5)'
+		},
+		markerTip: {
+			display: true,
+			text: function(marker) {
+				return marker.text;
+			},
+			time: function(marker) {
+				return marker.time;
+			}
+		},
+		breakOverlay: {
+			display: false,
+			displayTime: 3,
+			text: function(marker) {
+				return "Break overlay: " + marker.overlayText;
+			},
+			style: {
+				'width': '100%',
+				'height': '20%',
+				'background-color': 'rgba(0,0,0,0.7)',
+				'color': 'white',
+				'font-size': '17px'
+			}
+		},
+		onMarkerClick: function(marker) {},
+		onMarkerReached: function(marker) {},
+		markers: []
+	};
+
+	// create a non-colliding random number
+	function generateUUID() {
+		var d = new Date().getTime();
+		var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+			var r = (d + Math.random() * 16) % 16 | 0;
+			d = Math.floor(d / 16);
+			return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+		});
+		return uuid;
+	};
+
+	/**
+	 * register the markers plugin (dependent on jquery)
+	 */
+	var setting = $.extend(true, {}, defaultSetting, options),
+		markersMap = {},
+		markersList = [], // list of markers sorted by time
+		videoWrapper = $(this.el()),
+		currentMarkerIndex = -1,
+		player = this,
+		markerTip = null,
+		breakOverlay = null,
+		overlayIndex = -1;
+
+	function sortMarkersList() {
+		// sort the list by time in asc order
+		markersList.sort(function(a, b) {
+			return setting.markerTip.time(a) - setting.markerTip.time(b);
+		});
+	}
+
+	function addMarkers(newMarkers) {
+		// create the markers
+		$.each(newMarkers, function(index, marker) {
+			marker.key = generateUUID();
+
+			videoWrapper.find('.vjs-progress-control .vjs-slider').append(
+				createMarkerDiv(marker));
+
+			// store marker in an internal hash map
+			markersMap[marker.key] = marker;
+			markersList.push(marker);
+		});
+
+		sortMarkersList();
+	}
+
+	function getPosition(marker) {
+		return (setting.markerTip.time(marker) / player.duration()) * 100
+	}
+
+	function createMarkerDiv(marker, duration) {
+		var markerDiv = $("<div class='vjs-marker'></div>")
+		markerDiv.css(setting.markerStyle)
+			.css({
+				// "margin-left": -parseFloat(markerDiv.css("width")) / 2 + 'px',
+				"left": getPosition(marker) + '%'
+			})
+			.attr("data-marker-key", marker.key)
+			.attr("data-marker-time", setting.markerTip.time(marker));
+
+		// add user-defined class to marker
+		if (marker.class) {
+			markerDiv.addClass(marker.class);
+		}
+
+		// bind click event to seek to marker time
+		markerDiv.on('click', function(e) {
+
+			var preventDefault = false;
+			if (typeof setting.onMarkerClick === "function") {
+				// if return false, prevent default behavior
+				preventDefault = setting.onMarkerClick(marker) == false;
+			}
+
+			if (!preventDefault) {
+				var key = $(this).data('marker-key');
+				player.currentTime(setting.markerTip.time(markersMap[key]));
+			}
+		});
+
+		if (setting.markerTip.display) {
+			registerMarkerTipHandler(markerDiv);
+		}
+
+		return markerDiv;
+	}
+
+	function updateMarkers() {
+		// update UI for markers whose time changed
+
+		for (var i = 0; i < markersList.length; i++) {
+			var marker = markersList[i];
+			var markerDiv = videoWrapper.find(".vjs-marker[data-marker-key='" + marker.key + "']");
+			var markerTime = setting.markerTip.time(marker);
+
+			if (markerDiv.data('marker-time') != markerTime) {
+				markerDiv.css({
+						"left": getPosition(marker) + '%'
+					})
+					.attr("data-marker-time", markerTime);
+			}
+		}
+		sortMarkersList();
+	}
+
+	function removeMarkers(indexArray) {
+		// reset overlay
+		if (breakOverlay) {
+			overlayIndex = -1;
+			breakOverlay.css("visibility", "hidden");
+		}
+		currentMarkerIndex = -1;
+
+		for (var i = 0; i < indexArray.length; i++) {
+			var index = indexArray[i];
+			var marker = markersList[index];
+			if (marker) {
+				// delete from memory
+				delete markersMap[marker.key];
+				markersList[index] = null;
+
+				// delete from dom
+				videoWrapper.find(".vjs-marker[data-marker-key='" + marker.key + "']").remove();
+			}
+		}
+
+		// clean up array
+		for (var i = markersList.length - 1; i >= 0; i--) {
+			if (markersList[i] === null) {
+				markersList.splice(i, 1);
+			}
+		}
+
+		// sort again
+		sortMarkersList();
+	}
+
+
+	// attach hover event handler
+	function registerMarkerTipHandler(markerDiv) {
+
+		markerDiv.on('mouseover', function() {
+			var marker = markersMap[$(this).data('marker-key')];
+
+			markerTip.find('.vjs-tip-inner').html(setting.markerTip.text(marker));
+
+			// margin-left needs to minus the padding length to align correctly with the marker
+			markerTip.css({
+				"left": getPosition(marker) + '%',
+				"margin-left": -parseFloat(markerTip.css("width")) / 2 - 5 + 'px',
+				"visibility": "visible"
+			});
+
+		}).on('mouseout', function() {
+			markerTip.css("visibility", "hidden");
+		});
+	}
+
+	function initializeMarkerTip() {
+		markerTip = $("<div class='vjs-tip'><div class='vjs-tip-arrow'></div><div class='vjs-tip-inner'></div></div>");
+		videoWrapper.find('.vjs-progress-control .vjs-slider').append(markerTip);
+	}
+
+	// show or hide break overlays
+	function updateBreakOverlay() {
+		if (!setting.breakOverlay.display || currentMarkerIndex < 0) {
+			return;
+		}
+
+		var currentTime = player.currentTime();
+		var marker = markersList[currentMarkerIndex];
+		var markerTime = setting.markerTip.time(marker);
+
+		if (currentTime >= markerTime &&
+			currentTime <= (markerTime + setting.breakOverlay.displayTime)) {
+			if (overlayIndex != currentMarkerIndex) {
+				overlayIndex = currentMarkerIndex;
+				breakOverlay.find('.vjs-break-overlay-text').html(setting.breakOverlay.text(marker));
+			}
+
+			breakOverlay.css('visibility', "visible");
+
+		} else {
+			overlayIndex = -1;
+			breakOverlay.css("visibility", "hidden");
+		}
+	}
+
+	// problem when the next marker is within the overlay display time from the previous marker
+	function initializeOverlay() {
+		breakOverlay = $("<div class='vjs-break-overlay'><div class='vjs-break-overlay-text'></div></div>")
+			.css(setting.breakOverlay.style);
+		videoWrapper.append(breakOverlay);
+		overlayIndex = -1;
+	}
+
+	function onTimeUpdate() {
+		onUpdateMarker();
+		updateBreakOverlay();
+	}
+
+	function onUpdateMarker() {
+		/*
+		    check marker reached in between markers
+		    the logic here is that it triggers a new marker reached event only if the player 
+		    enters a new marker range (e.g. from marker 1 to marker 2). Thus, if player is on marker 1 and user clicked on marker 1 again, no new reached event is triggered)
+		*/
+
+		var getNextMarkerTime = function(index) {
+			if (index < markersList.length - 1) {
+				return setting.markerTip.time(markersList[index + 1]);
+			}
+			// next marker time of last marker would be end of video time
+			return player.duration();
+		}
+		var currentTime = player.currentTime();
+		var newMarkerIndex;
+
+		if (currentMarkerIndex != -1) {
+			// check if staying at same marker
+			var nextMarkerTime = getNextMarkerTime(currentMarkerIndex);
+			if (currentTime >= setting.markerTip.time(markersList[currentMarkerIndex]) &&
+				currentTime < nextMarkerTime) {
+				return;
+			}
+
+			// check for ending (at the end current time equals player duration)
+			if (currentMarkerIndex === markersList.length - 1 &&
+				currentTime === player.duration()) {
+				return;
+			}
+		}
+
+		// check first marker, no marker is selected
+		if (markersList.length > 0 &&
+			currentTime < setting.markerTip.time(markersList[0])) {
+			newMarkerIndex = -1;
+		} else {
+			// look for new index
+			for (var i = 0; i < markersList.length; i++) {
+				nextMarkerTime = getNextMarkerTime(i);
+
+				if (currentTime >= setting.markerTip.time(markersList[i]) &&
+					currentTime < nextMarkerTime) {
+					newMarkerIndex = i;
+					break;
+				}
+			}
+		}
+
+		// set new marker index
+		if (newMarkerIndex != currentMarkerIndex) {
+			// trigger event
+			if (newMarkerIndex != -1 && options.onMarkerReached) {
+				options.onMarkerReached(markersList[newMarkerIndex]);
+			}
+			currentMarkerIndex = newMarkerIndex;
+		}
+
+	}
+
+	// setup the whole thing
+	function initialize() {
+		if (setting.markerTip.display) {
+			initializeMarkerTip();
+		}
+
+		// remove existing markers if already initialized
+		player.markers.removeAll();
+		addMarkers(options.markers);
+
+		if (setting.breakOverlay.display) {
+			initializeOverlay();
+		}
+		onTimeUpdate();
+		player.on("timeupdate", onTimeUpdate);
+	}
+
+	// setup the plugin after we loaded video's meta data
+	player.on("loadedmetadata", function() {
+		initialize();
+	});
+
+	// exposed plugin API
+	player.markers = {
+		getMarkers: function() {
+			return markersList;
+		},
+		next: function() {
+			// go to the next marker from current timestamp
+			var currentTime = player.currentTime();
+			for (var i = 0; i < markersList.length; i++) {
+				var markerTime = setting.markerTip.time(markersList[i]);
+				if (markerTime > currentTime) {
+					player.currentTime(markerTime);
+					break;
+				}
+			}
+		},
+		prev: function() {
+			// go to previous marker
+			var currentTime = player.currentTime();
+			for (var i = markersList.length - 1; i >= 0; i--) {
+				var markerTime = setting.markerTip.time(markersList[i]);
+				// add a threshold
+				if (markerTime + 0.5 < currentTime) {
+					player.currentTime(markerTime);
+					break;
+				}
+			}
+		},
+		add: function(newMarkers) {
+			// add new markers given an array of index
+			addMarkers(newMarkers);
+		},
+		remove: function(indexArray) {
+			// remove markers given an array of index
+			removeMarkers(indexArray);
+		},
+		removeAll: function() {
+			var indexArray = [];
+			for (var i = 0; i < markersList.length; i++) {
+				indexArray.push(i);
+			}
+			removeMarkers(indexArray);
+		},
+		updateTime: function() {
+			// notify the plugin to update the UI for changes in marker times 
+			updateMarkers();
+		},
+		reset: function(newMarkers) {
+			// remove all the existing markers and add new ones
+			player.markers.removeAll();
+			addMarkers(newMarkers);
+		},
+		destroy: function() {
+			// unregister the plugins and clean up even handlers
+			player.markers.removeAll();
+			breakOverlay.remove();
+			markerTip.remove();
+			player.off("timeupdate", updateBreakOverlay);
+			delete player.markers;
+		},
+	};
+
+};
+
+// 水印
+const waterMark = function(options) {
+	var defaults = {
+			file: 'Owned_Stamp.png',
+			xpos: 0,
+			ypos: 0,
+			xrepeat: 0,
+			opacity: 100,
+			clickable: false,
+			url: "",
+			className: 'vjs-watermark',
+			text: false,
+			debug: false
+		},
+		extend = function() {
+			var args, target, i, object, property;
+			args = Array.prototype.slice.call(arguments);
+			target = args.shift() || {};
+			for (i in args) {
+				object = args[i];
+				for (property in object) {
+					if (object.hasOwnProperty(property)) {
+						if (typeof object[property] === 'object') {
+							target[property] = extend(target[property], object[property]);
+						} else {
+							target[property] = object[property];
+						}
+					}
+				}
+			}
+			return target;
+		};
+
+	//! global varible containing reference to the DOM element
+	var div;
+
+
+	if (settings.debug) console.log('watermark: Register init');
+
+	var options, player, video, img, link;
+	options = extend(defaults, settings);
+
+	/* Grab the necessary DOM elements */
+	player = this.el();
+	video = this.el().getElementsByTagName('video')[0];
+
+	// create the watermark element
+	if (!div) {
+		div = document.createElement('div');
+		div.className = options.className;
+	} else {
+		//! if div already exists, empty it
+		div.innerHTML = '';
+	}
+
+	// if text is set, display text
+	if (options.text)
+		div.textContent = options.text;
+
+	// if img is set, add img
+	if (options.file) {
+		img = document.createElement('img');
+		div.appendChild(img);
+		img.src = options.file;
+	}
+
+	//img.style.bottom = "0";
+	//img.style.right = "0";
+	if ((options.ypos === 0) && (options.xpos === 0)) // Top left
+	{
+		div.style.top = "0";
+		div.style.left = "0";
+	} else if ((options.ypos === 0) && (options.xpos === 100)) // Top right
+	{
+		div.style.top = "0";
+		div.style.right = "0";
+	} else if ((options.ypos === 100) && (options.xpos === 100)) // Bottom right
+	{
+		div.style.bottom = "0";
+		div.style.right = "0";
+	} else if ((options.ypos === 100) && (options.xpos === 0)) // Bottom left
+	{
+		div.style.bottom = "0";
+		div.style.left = "0";
+	} else if ((options.ypos === 50) && (options.xpos === 50)) // Center
+	{
+		if (options.debug) console.log('watermark: player:' + player.width + 'x' + player.height);
+		if (options.debug) console.log('watermark: video:' + video.videoWidth + 'x' + video.videoHeight);
+		if (options.debug) console.log('watermark: image:' + img.width + 'x' + img.height);
+		div.style.top = (this.height() / 2) + "px";
+		div.style.left = (this.width() / 2) + "px";
+	}
+	div.style.opacity = options.opacity;
+
+	//div.style.backgroundImage = "url("+options.file+")";
+	//div.style.backgroundPosition.x = options.xpos+"%";
+	//div.style.backgroundPosition.y = options.ypos+"%";
+	//div.style.backgroundRepeat = options.xrepeat;
+	//div.style.opacity = (options.opacity/100);
+
+	//if user wants watermark to be clickable, add anchor elem
+	//todo: check if options.url is an actual url?
+	if (options.clickable && options.url !== "") {
+		link = document.createElement("a");
+		link.href = options.url;
+		link.target = "_blank";
+		link.appendChild(div);
+		//add clickable watermark to the player
+		player.appendChild(link);
+	} else {
+		//add normal watermark to the player
+		player.appendChild(div);
+	}
+
+	if (options.debug) console.log('watermark: Register end');
+
+};
+
 // Register the plugin with video.js.
 videojs.plugin('open', open);
 videojs.plugin('videoJsResolutionSwitcher', videoJsResolutionSwitcher);
 videojs.plugin('disableProgress', disableProgress);
+videojs.plugin('markers', markers);
+videojs.plugin('waterMark', waterMark);
 
 // Include the version number.
 open.VERSION = '__VERSION__';

@@ -1,67 +1,102 @@
 <!doctype html>
 <html>
+
 <head>
-  <meta charset="utf-8">
-  <title>videojs-open Demo</title>
-  <link href="/node_modules/video.js/dist/video-js.css" rel="stylesheet">
-  <link href="/dist/videojs-open.css" rel="stylesheet"></head>
+    <meta charset="utf-8">
+    <title>videojs-open Demo</title>
+    <link href="/node_modules/video.js/dist/video-js.css" rel="stylesheet">
+    <link href="/dist/videojs-open.css" rel="stylesheet">
+</head>
+
 <body>
-  <video id="videojs-open-player" class="video-js vjs-default-skin" controls  poster="http://vjs.zencdn.net/v/oceans.png">
-    <source src="http://vjs.zencdn.net/v/oceans.mp4" type="video/mp4" label='SD'>
-    <source src="http://vjs.zencdn.net/v/oceans.mp4" type="video/mp4" label='HD'>
-    <source src="http://vjs.zencdn.net/v/oceans.webm" type="video/webm" label='LD'>
-    <source src="http://vjs.zencdn.net/v/oceans.ogv" type="video/ogg"  label='FHD'>
+    <video id="videojs-open-player" class="video-js vjs-default-skin" controls data-setup='{}'>
+        <!--  <source src="http://vjs.zencdn.net/v/oceans.mp4" type="video/mp4" res='360' label='SD'>
+    <source src="http://vjs.zencdn.net/v/oceans.mp4" type="video/mp4" res='480' label='HD'>
+    <source src="http://vjs.zencdn.net/v/oceans.webm" type="video/webm"  res='720' label='LD'>
+    <source src="http://vjs.zencdn.net/v/oceans.ogv" type="video/ogg" res='1080' label='FHD'>
     <p class="vjs-no-js">
-      To view this video please enable JavaScript, and consider upgrading to a web browser that
-      <a href="http://videojs.com/html5-video-support/" target="_blank" class="vjs-hidden" hidden="hidden">supports HTML5 video</a>
+      请升级浏览器来播放
+      <a href="http://videojs.com/html5-video-support/" target="_blank" class="vjs-hidden" hidden="hidden">HTML5 视频</a>
     </p>
-  </video>
-  <ul>
-    <li>
-      <a href="/test/">Run unit tests in browser.</a>
-    </li>
-    <li>
-      <a href="/docs/api/">Read generated docs.</a>
-    </li>
-  </ul>
-  <script src="/node_modules/video.js/dist/video.js"></script>
-  <script src="/dist/videojs-open.js"></script>
-  <script>
+    -->
+    </video>
+    <ul>
+        <li>
+            <a href="/test/">Run unit tests in browser.</a>
+        </li>
+        <li>
+            <a href="/docs/api/">Read generated docs.</a>
+        </li>
+    </ul>
+    <script src="//cdn.bootcss.com/jquery/1.9.1/jquery.min.js"></script>
+    <script src="/node_modules/video.js/dist/video.js"></script>
+    <script src="/dist/videojs-open.js"></script>
+    <script>
     (function(window, videojs) {
-      var player = window.player = videojs('videojs-open-player', {
-        controls: true,
-        plugins: {
-            videoJsResolutionSwitcher: {
-              //default: 'HD',
-              dynamicLabel: false
-            },
-            disableProgress: {
-              autoDisable: false
+        var player = window.player = videojs('videojs-open-player', {
+            controls: true,
+            plugins: {
+                videoJsResolutionSwitcher: {
+                    ui: true,
+                    default: '480',
+                    dynamicLabel: true
+                },
+                disableProgress: {
+                    autoDisable: false
+                }
             }
-          }
-      }, function(){
-
-        // Add dynamically sources via updateSrc method
-        player.updateSrc([
-            {
-              src: 'http://vjs.zencdn.net/v/oceans.mp4',
-              type: 'video/mp4',
-              label: 'HD'
-            },
-            {
-              src: 'http://vjs.zencdn.net/v/oceans.mp4',
-              type: 'video/mp4',
-              label: 'SD'
-            }
-          ]);
-
-          player.on('resolutionchange', function(){
-            console.info('Source changed to %s', player.src())
-          });
-          player.disableProgress.disable();
-      });
-      player.open();
+        }, function() {
+            var player = this;
+            window.player = player
+                // Add dynamically sources via updateSrc method
+            player.updateSrc([{
+                src: 'http://vjs.zencdn.net/v/oceans.mp4?HD',
+                type: 'video/mp4',
+                label: 'HD',
+                res: '480'
+            }, {
+                src: 'http://vjs.zencdn.net/v/oceans.mp4?SD',
+                type: 'video/mp4',
+                label: 'SD',
+                res: '360'
+            }]);
+            // Switch Resolution Event
+            player.on('resolutionchange', function(e) {
+                console.info('Source changed to %s', player.src())
+            });
+            // Init videoJsResolutionSwitcher
+            player.videoJsResolutionSwitcher();
+            // disableProgress
+            player.disableProgress.disable();
+            // make marks
+            player.markers({
+                markerStyle: {
+                    'width': '7px',
+                    'border-radius': '20%',
+                    'background-color': '#fff'
+                },
+                markers: [{
+                    time: 9,
+                    text: "本节特性：<br />前端自动化流程的构建<br />与流程自动化测试流程<br />持续集成"
+                }, {
+                    time: 16,
+                    text: "本节特性：<br />前端自动化流程的构建与流程自动化测试流程持续集成"
+                }, {
+                    time: 23,
+                    text: "本节特性：前端自动化流程的构建与流程自动化测试流程持续集成"
+                }, {
+                    time: 28,
+                    text: "本节特性：前端自动化流程的构建与流程自动化测试流程持续集成"
+                }],
+                onMarkerReached: function(marker) {
+                    player.pause();
+                    console.log(marker)
+                }
+            });
+        });
+        player.open();
     }(window, window.videojs));
-  </script>
+    </script>
 </body>
+
 </html>
