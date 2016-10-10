@@ -554,7 +554,6 @@ const markers = function(options) {
 		});
 		return uuid;
 	};
-
 	/**
 	 * register the markers plugin (dependent on jquery)
 	 */
