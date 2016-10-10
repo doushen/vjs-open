@@ -28,7 +28,7 @@
             <a href="/docs/api/">Read generated docs.</a>
         </li>
     </ul>
-    <script src="//cdn.bootcss.com/jquery/1.9.1/jquery.min.js"></script>
+    <script src="/node_modules/jquery/jquery.min.js"></script>
     <script src="/node_modules/video.js/dist/video.js"></script>
     <script src="/dist/videojs-open.js"></script>
     <script>
@@ -39,7 +39,7 @@
                 videoJsResolutionSwitcher: {
                     ui: true,
                     default: '480',
-                    dynamicLabel: false
+                    dynamicLabel: true
                 },
                 disableProgress: {
                     autoDisable: false
@@ -52,12 +52,12 @@
             player.updateSrc([{
                 src: 'http://vjs.zencdn.net/v/oceans.mp4?HD',
                 type: 'video/mp4',
-                label: 'HD',
+                label: '高清',
                 res: '480'
             }, {
                 src: 'http://vjs.zencdn.net/v/oceans.mp4?SD',
                 type: 'video/mp4',
-                label: 'SD',
+                label: '标清',
                 res: '360'
             }]);
             // Switch Resolution Event
@@ -90,7 +90,7 @@
                 }],
                 onMarkerReached: function(marker) {
                     player.pause();
-                    console.log(marker)
+                    // console.log(marker);
                 }
             });
         });

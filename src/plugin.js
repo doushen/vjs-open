@@ -145,12 +145,12 @@ const videoJsResolutionSwitcher = function(options) {
 	player.getGroupedSrc = function() {
 		return this.groupedSrc;
 	};
-
 	player.setSourcesSanitized = function(sources, label, customSourcePicker) {
 		this.currentResolutionState = {
 			label: label,
 			sources: sources
 		};
+
 		if (typeof customSourcePicker === 'function') {
 			return customSourcePicker(player, sources, label);
 		}
@@ -161,6 +161,8 @@ const videoJsResolutionSwitcher = function(options) {
 				res: src.res
 			};
 		}));
+
+		$(".vjs-resolution-button-label").html(label);
 		return player;
 	};
 
@@ -229,7 +231,6 @@ const videoJsResolutionSwitcher = function(options) {
 		} else if (groupedSrc.res[selectedRes]) {
 			selectedLabel = groupedSrc.res[selectedRes][0].label;
 		}
-
 		return {
 			res: selectedRes,
 			label: selectedLabel,
@@ -435,9 +436,6 @@ const videoJsResolutionSwitcher = function(options) {
 		return MenuButton.prototype.buildCSSClass.call(this) + ' vjs-resolution-button';
 	};
 	MenuButton.registerComponent('ResolutionMenuButton', ResolutionMenuButton);
-
-
-
 };
 
 /**
@@ -888,7 +886,6 @@ const markers = function(options) {
 			delete player.markers;
 		},
 	};
-
 };
 
 /**
@@ -1010,7 +1007,6 @@ const waterMark = function(options) {
 	}
 
 	if (options.debug) console.log('watermark: Register end');
-
 };
 
 // Register the plugin with video.js.
