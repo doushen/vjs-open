@@ -20,13 +20,14 @@ bower install  --save videojs-open
 
 ## Usage
 
-To include videojs-open on your website or web application, use any of the following methods.
+To include videojs-open and jQuery library on your website or web application, use any of the following methods.
 
 ### `<script>` Tag
 
 This is the simplest case. Get the script in whatever way you prefer and include the plugin _after_ you include [video.js][videojs], so that the `videojs` global is available.
 
 ```html
+<script src="//path/to/jquery.min.js"></script>
 <script src="//path/to/video.min.js"></script>
 <script src="//path/to/videojs-open.min.js"></script>
 <script>
