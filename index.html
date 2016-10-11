@@ -9,7 +9,8 @@
 </head>
 
 <body>
-    <video id="videojs-open-player" class="video-js vjs-default-skin" controls data-setup='{}'>
+    <video id="videojs-open-player" class="video-js vjs-default-skin" controls data-setup='{"language":"zh-CN"}'>
+      <track src="/captions.en.vtt" srclang="en" label="English" default></track>
         <!--  <source src="http://vjs.zencdn.net/v/oceans.mp4" type="video/mp4" res='360' label='SD'>
     <source src="http://vjs.zencdn.net/v/oceans.mp4" type="video/mp4" res='480' label='HD'>
     <source src="http://vjs.zencdn.net/v/oceans.webm" type="video/webm"  res='720' label='LD'>
@@ -31,8 +32,10 @@
     <script src="/node_modules/jquery/jquery.min.js"></script>
     <script src="/node_modules/video.js/dist/video.js"></script>
     <script src="/dist/videojs-open.js"></script>
+    <script src="/dist/lang/zh-CN.js"></script>
     <script>
     (function(window, videojs) {
+        videojs.options.flash.swf = '../node_modules/videojs-swf/dist/video-js.swf';
         var player = window.player = videojs('videojs-open-player', {
             controls: true,
             plugins: {
