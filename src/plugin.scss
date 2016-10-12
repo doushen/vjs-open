@@ -3,6 +3,11 @@
     // This class is added to the video.js element by the plugin by default.
     &.vjs-open {
         display: block;
+
+        .vjs-control-bar {
+        	z-index: 9999;
+        }
+
         // ===============resolution start===============
         .vjs-resolution-button {
             .vjs-menu {

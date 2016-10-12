@@ -531,7 +531,7 @@ const markers = function(options) {
 			},
 			style: {
 				'width': '100%',
-				'height': '100%',
+				'height': 'calc(100% - 36px)',
 				'background-color': 'rgba(0,0,0,0.7)',
 				'color': 'white',
 				'font-size': '17px'
@@ -894,7 +894,7 @@ const markers = function(options) {
  * @param {[type]} options [description]
  * return {[type]}  [description]
  */
-const waterMark = function(options) {
+const waterMark = function(settings) {
 	var defaults = {
 			file: 'logo.png',
 			xpos: 0,
@@ -929,7 +929,7 @@ const waterMark = function(options) {
 	//! global varible containing reference to the DOM element
 	var div;
 
-	var settings = $.extend(true, {}, defaults, options)
+	// var settings = $.extend(true, {}, defaults, options);
 	
 	if (settings.debug) console.log('watermark: Register init');
 
@@ -957,27 +957,29 @@ const waterMark = function(options) {
 	if (options.file) {
 		img = document.createElement('img');
 		div.appendChild(img);
+		div.style.display = "inline-block";
+		div.style.position = "absolute";
+		div.style.zIndex = 0;
 		img.src = options.file;
 	}
-
 	//img.style.bottom = "0";
 	//img.style.right = "0";
 	if ((options.ypos === 0) && (options.xpos === 0)) // Top left
 	{
-		div.style.top = "0";
-		div.style.left = "0";
+		div.style.top = "0px";
+		div.style.left = "0px";
 	} else if ((options.ypos === 0) && (options.xpos === 100)) // Top right
 	{
-		div.style.top = "0";
-		div.style.right = "0";
+		div.style.top = "0px";
+		div.style.right = "0px";
 	} else if ((options.ypos === 100) && (options.xpos === 100)) // Bottom right
 	{
-		div.style.bottom = "0";
-		div.style.right = "0";
+		div.style.bottom = "36px";
+		div.style.right = "0px";
 	} else if ((options.ypos === 100) && (options.xpos === 0)) // Bottom left
 	{
-		div.style.bottom = "0";
-		div.style.left = "0";
+		div.style.bottom = "36px";
+		div.style.left = "0px";
 	} else if ((options.ypos === 50) && (options.xpos === 50)) // Center
 	{
 		if (options.debug) console.log('watermark: player:' + player.width + 'x' + player.height);
