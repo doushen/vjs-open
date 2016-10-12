@@ -154,12 +154,12 @@ var videoJsResolutionSwitcher = function videoJsResolutionSwitcher(options) {
 	player.getGroupedSrc = function () {
 		return this.groupedSrc;
 	};
-
 	player.setSourcesSanitized = function (sources, label, customSourcePicker) {
 		this.currentResolutionState = {
 			label: label,
 			sources: sources
 		};
+
 		if (typeof customSourcePicker === 'function') {
 			return customSourcePicker(player, sources, label);
 		}
@@ -170,6 +170,8 @@ var videoJsResolutionSwitcher = function videoJsResolutionSwitcher(options) {
 				res: src.res
 			};
 		}));
+
+		$(".vjs-resolution-button-label").html(label);
 		return player;
 	};
 
@@ -238,7 +240,6 @@ var videoJsResolutionSwitcher = function videoJsResolutionSwitcher(options) {
 		} else if (groupedSrc.res[selectedRes]) {
 			selectedLabel = groupedSrc.res[selectedRes][0].label;
 		}
-
 		return {
 			res: selectedRes,
 			label: selectedLabel,
@@ -532,20 +533,22 @@ var markers = function markers(options) {
 			}
 		},
 		breakOverlay: {
-			display: false,
-			displayTime: 3,
+			display: true,
+			displayTime: 1,
 			text: function text(marker) {
-				return "Break overlay: " + marker.overlayText;
+				return marker.overlayText;
 			},
 			style: {
 				'width': '100%',
-				'height': '20%',
+				'height': 'calc(100% - 36px)',
 				'background-color': 'rgba(0,0,0,0.7)',
 				'color': 'white',
 				'font-size': '17px'
 			}
 		},
-		onMarkerClick: function onMarkerClick(marker) {},
+		onMarkerClick: function onMarkerClick(marker) {
+			return false;
+		},
 		onMarkerReached: function onMarkerReached(marker) {},
 		markers: []
 	};
@@ -586,7 +589,7 @@ var markers = function markers(options) {
 		$.each(newMarkers, function (index, marker) {
 			marker.key = generateUUID();
 
-			videoWrapper.find('.vjs-progress-control .vjs-slider').append(createMarkerDiv(marker));
+			videoWrapper.find('.vjs-progress-control').append(createMarkerDiv(marker));
 
 			// store marker in an internal hash map
 			markersMap[marker.key] = marker;
@@ -602,8 +605,9 @@ var markers = function markers(options) {
 
 	function createMarkerDiv(marker, duration) {
 		var markerDiv = $("<div class='vjs-marker'></div>");
+		var marg = parseInt(videoWrapper.find('.vjs-progress-control .vjs-slider').css('marginLeft'));
 		markerDiv.css(setting.markerStyle).css({
-			// "margin-left": -parseFloat(markerDiv.css("width")) / 2 + 'px',
+			"margin-left": marg - parseFloat(markerDiv.css("width")) / 2 + 'px',
 			"left": getPosition(marker) + '%'
 		}).attr("data-marker-key", marker.key).attr("data-marker-time", setting.markerTip.time(marker));
 
@@ -704,7 +708,7 @@ var markers = function markers(options) {
 
 	function initializeMarkerTip() {
 		markerTip = $("<div class='vjs-tip'><div class='vjs-tip-arrow'></div><div class='vjs-tip-inner'></div></div>");
-		videoWrapper.find('.vjs-progress-control .vjs-slider').append(markerTip);
+		videoWrapper.find('.vjs-progress-control').append(markerTip);
 	}
 
 	// show or hide break overlays
@@ -887,9 +891,9 @@ var markers = function markers(options) {
  * @param {[type]} options [description]
  * return {[type]}  [description]
  */
-var waterMark = function waterMark(options) {
+var waterMark = function waterMark(settings) {
 	var defaults = {
-		file: 'Owned_Stamp.png',
+		file: 'logo.png',
 		xpos: 0,
 		ypos: 0,
 		xrepeat: 0,
@@ -922,6 +926,8 @@ var waterMark = function waterMark(options) {
 	//! global varible containing reference to the DOM element
 	var div;
 
+	// var settings = $.extend(true, {}, defaults, options);
+
 	if (settings.debug) console.log('watermark: Register init');
 
 	var options, player, video, img, link;
@@ -947,27 +953,29 @@ var waterMark = function waterMark(options) {
 	if (options.file) {
 		img = document.createElement('img');
 		div.appendChild(img);
+		div.style.display = "inline-block";
+		div.style.position = "absolute";
+		div.style.zIndex = 0;
 		img.src = options.file;
 	}
-
 	//img.style.bottom = "0";
 	//img.style.right = "0";
 	if (options.ypos === 0 && options.xpos === 0) // Top left
 		{
-			div.style.top = "0";
-			div.style.left = "0";
+			div.style.top = "0px";
+			div.style.left = "0px";
 		} else if (options.ypos === 0 && options.xpos === 100) // Top right
 		{
-			div.style.top = "0";
-			div.style.right = "0";
+			div.style.top = "0px";
+			div.style.right = "0px";
 		} else if (options.ypos === 100 && options.xpos === 100) // Bottom right
 		{
-			div.style.bottom = "0";
-			div.style.right = "0";
+			div.style.bottom = "0px";
+			div.style.right = "0px";
 		} else if (options.ypos === 100 && options.xpos === 0) // Bottom left
 		{
-			div.style.bottom = "0";
-			div.style.left = "0";
+			div.style.bottom = "0px";
+			div.style.left = "0px";
 		} else if (options.ypos === 50 && options.xpos === 50) // Center
 		{
 			if (options.debug) console.log('watermark: player:' + player.width + 'x' + player.height);

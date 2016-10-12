@@ -974,11 +974,11 @@ const waterMark = function(settings) {
 		div.style.right = "0px";
 	} else if ((options.ypos === 100) && (options.xpos === 100)) // Bottom right
 	{
-		div.style.bottom = "36px";
+		div.style.bottom = "0px";
 		div.style.right = "0px";
 	} else if ((options.ypos === 100) && (options.xpos === 0)) // Bottom left
 	{
-		div.style.bottom = "36px";
+		div.style.bottom = "0px";
 		div.style.left = "0px";
 	} else if ((options.ypos === 50) && (options.xpos === 50)) // Center
 	{
