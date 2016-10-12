@@ -524,20 +524,20 @@ const markers = function(options) {
 			}
 		},
 		breakOverlay: {
-			display: false,
-			displayTime: 3,
+			display: true,
+			displayTime: 1,
 			text: function(marker) {
-				return "Break overlay: " + marker.overlayText;
+				return marker.overlayText;
 			},
 			style: {
 				'width': '100%',
-				'height': '20%',
+				'height': '100%',
 				'background-color': 'rgba(0,0,0,0.7)',
 				'color': 'white',
 				'font-size': '17px'
 			}
 		},
-		onMarkerClick: function(marker) {},
+		onMarkerClick: function(marker) { return false},
 		onMarkerReached: function(marker) {},
 		markers: []
 	};
@@ -577,7 +577,7 @@ const markers = function(options) {
 		$.each(newMarkers, function(index, marker) {
 			marker.key = generateUUID();
 
-			videoWrapper.find('.vjs-progress-control .vjs-slider').append(
+			videoWrapper.find('.vjs-progress-control').append(
 				createMarkerDiv(marker));
 
 			// store marker in an internal hash map
@@ -593,10 +593,11 @@ const markers = function(options) {
 	}
 
 	function createMarkerDiv(marker, duration) {
-		var markerDiv = $("<div class='vjs-marker'></div>")
+		var markerDiv = $("<div class='vjs-marker'></div>");
+		var marg = parseInt(videoWrapper.find('.vjs-progress-control .vjs-slider').css('marginLeft'));
 		markerDiv.css(setting.markerStyle)
 			.css({
-				// "margin-left": -parseFloat(markerDiv.css("width")) / 2 + 'px',
+				"margin-left": marg - parseFloat(markerDiv.css("width"))/2 + 'px',
 				"left": getPosition(marker) + '%'
 			})
 			.attr("data-marker-key", marker.key)
@@ -702,7 +703,7 @@ const markers = function(options) {
 
 	function initializeMarkerTip() {
 		markerTip = $("<div class='vjs-tip'><div class='vjs-tip-arrow'></div><div class='vjs-tip-inner'></div></div>");
-		videoWrapper.find('.vjs-progress-control .vjs-slider').append(markerTip);
+		videoWrapper.find('.vjs-progress-control').append(markerTip);
 	}
 
 	// show or hide break overlays
@@ -895,7 +896,7 @@ const markers = function(options) {
  */
 const waterMark = function(options) {
 	var defaults = {
-			file: 'Owned_Stamp.png',
+			file: 'logo.png',
 			xpos: 0,
 			ypos: 0,
 			xrepeat: 0,
@@ -928,7 +929,8 @@ const waterMark = function(options) {
 	//! global varible containing reference to the DOM element
 	var div;
 
-
+	var settings = $.extend(true, {}, defaults, options)
+	
 	if (settings.debug) console.log('watermark: Register init');
 
 	var options, player, video, img, link;

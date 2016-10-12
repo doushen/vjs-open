@@ -10,7 +10,7 @@
 
 <body>
     <video id="videojs-open-player" class="video-js vjs-default-skin" controls data-setup='{"language":"zh-CN"}'>
-      <track src="/captions.en.vtt" srclang="en" label="English" default></track>
+        <track src="/captions.en.vtt" srclang="en" label="English" default></track>
         <!--  <source src="http://vjs.zencdn.net/v/oceans.mp4" type="video/mp4" res='360' label='SD'>
     <source src="http://vjs.zencdn.net/v/oceans.mp4" type="video/mp4" res='480' label='HD'>
     <source src="http://vjs.zencdn.net/v/oceans.webm" type="video/webm"  res='720' label='LD'>
@@ -46,12 +46,19 @@
                 },
                 disableProgress: {
                     autoDisable: false
+                },
+                waterMark: {
+                    file: 'Logo.png',
+                    xpos: 50,
+                    ypos: 50,
+                    xrepeat: 0,
+                    opacity: 0.5,
                 }
             }
         }, function() {
             var player = this;
             window.player = player
-            // Add dynamically sources via updateSrc method
+                // Add dynamically sources via updateSrc method
             player.updateSrc([{
                 src: 'http://vjs.zencdn.net/v/oceans.mp4?HD',
                 type: 'video/mp4',
@@ -73,6 +80,9 @@
             player.disableProgress.disable();
             // make marks
             player.markers({
+                breakOverlay: {
+
+                },
                 markerStyle: {
                     'width': '7px',
                     'border-radius': '20%',
@@ -80,22 +90,34 @@
                 },
                 markers: [{
                     time: 9,
-                    text: "本节特性：<br />前端自动化流程的构建<br />与流程自动化测试流程<br />持续集成"
+                    text: "本节特性：<br />前端自动化流程的构建<br />与流程自动化测试流程<br />持续集成",
+                    overlayText: "<button onclick='player.play();'>关闭</button>"
                 }, {
                     time: 16,
-                    text: "本节特性：<br />前端自动化流程的构建与流程自动化测试流程持续集成"
+                    text: "本节特性：<br />前端自动化流程的构建与流程自动化测试流程持续集成",
+                    overlayText: "<button onclick='player.play();'>关闭</button>"
                 }, {
                     time: 23,
-                    text: "本节特性：前端自动化流程的构建与流程自动化测试流程持续集成"
+                    text: "本节特性：前端自动化流程的构建与流程自动化测试流程持续集成",
+                    overlayText: "<button onclick='player.play();'>关闭</button>"
                 }, {
                     time: 28,
-                    text: "本节特性：前端自动化流程的构建与流程自动化测试流程持续集成"
+                    text: "本节特性：前端自动化流程的构建与流程自动化测试流程持续集成",
+                    overlayText: "<button onclick='player.play();'>关闭</button>"
                 }],
                 onMarkerReached: function(marker) {
                     player.pause();
                     // console.log(marker);
                 }
             });
+            // make watermark
+            // player.waterMark({
+            //     file: 'logo.png',
+            //     xpos: 50,
+            //     ypos: 50,
+            //     xrepeat: 0,
+            //     opacity: 0.5,
+            // });
         });
         player.open();
     }(window, window.videojs));
