@@ -3159,7 +3159,6 @@ const record = function(options) {
 			'record-start')
 	});
 	player.recordToggle.hide();
-
 };
 
 // Register the plugin with video.js.
