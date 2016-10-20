@@ -10,7 +10,7 @@
 
 <body>
     <video id="videojs-open-player" class="video-js vjs-default-skin" controls data-setup='{"language":"zh-CN"}'>
-        <track src="/captions.en.vtt" srclang="en" label="English" default></track>
+        <!-- <track src="/captions.en.vtt" srclang="en" label="English" default></track> -->
         <!--  <source src="http://vjs.zencdn.net/v/oceans.mp4" type="video/mp4" res='360' label='SD'>
     <source src="http://vjs.zencdn.net/v/oceans.mp4" type="video/mp4" res='480' label='HD'>
     <source src="http://vjs.zencdn.net/v/oceans.webm" type="video/webm"  res='720' label='LD'>
@@ -27,6 +27,9 @@
         </li>
         <li>
             <a href="/docs/api/">Read generated docs.</a>
+        </li>
+        <li>
+            <div id="snapshot"></div>
         </li>
     </ul>
     <script src="/node_modules/jquery/jquery.min.js"></script>
@@ -64,8 +67,8 @@
             }
         }, function() {
             var player = this;
-            window.player = player
-                // Add dynamically sources via updateSrc method
+            window.player = player;
+            // Add dynamically sources via updateSrc method
             player.updateSrc([{
                 src: 'http://vjs.zencdn.net/v/oceans.mp4?HD',
                 type: 'video/mp4',
@@ -125,6 +128,10 @@
                 }],
                 onMarkerReached: function(marker) {
                     player.pause();
+                    var ss = player.snapshot.getPlayerSnapshot(player);
+                    //$("#snapshot").html(ss);
+                    // var bb = player.snapshot.restorePlayerSnapshot(player, ss);
+                    console.log(ss);
                     // console.log(marker);
                 }
             });
@@ -136,6 +143,23 @@
                 xrepeat: 0,
                 opacity: 0.5,
             });
+            player.addRemoteTextTrack({
+                label: "English",
+                srclanguage: "en",
+                default: true,
+                id: "1",
+                src: "/captions.en.vtt"
+            });
+            player.addRemoteTextTrack({
+                label: "中文",
+                srclanguage: "en",
+                default: true,
+                id: "1",
+                src: "/captions.en.vtt"
+            });
+            // <track src="/captions.en.vtt" srclang="en" label="English" default></track>
+            // snapshot
+            // player.snapshot();
         });
         player.open();
     }(window, window.videojs));

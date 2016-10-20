@@ -1,13 +1,11 @@
-// Sass for videojs-open
+    // Sass for videojs-open
 .video-js {
     // This class is added to the video.js element by the plugin by default.
     &.vjs-open {
         display: block;
-
         .vjs-control-bar {
-        	z-index: 9999;
+            z-index: 9999;
         }
-
         // ===============resolution start===============
         .vjs-resolution-button {
             .vjs-menu {
@@ -44,7 +42,6 @@
             }
         }
         // ===============resolution end===============
-
         // ===============marks start===============
         .vjs-marker {
             position: absolute;
@@ -53,7 +50,7 @@
             // top:25%;
             opacity: 1;
             // z-index:0;
-            top:25%;
+            top: 25%;
             height: 50%;
             transition: opacity .2s ease;
             -webkit-transition: opacity .2s ease;
@@ -95,7 +92,7 @@
                 color: white;
                 max-width: 200px;
                 text-align: center;
-                word-wrap:break-word;
+                word-wrap: break-word;
             }
         }
         .vjs-break-overlay {
@@ -109,5 +106,112 @@
             }
         }
         // ===============marks end===============
+        // ===============snapshot start===============
+        .vjs-canvas-parent {
+            background-color: white;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            /* otherwise its video gets through somehow */
+        }
+        .vjs-canvas-container {
+            position: relative;
+            cursor: crosshair;
+            canvas {
+                position: absolute;
+            }
+            div {
+                justify-content: center;
+                /* align horizontal */
+                align-items: center;
+                /* align vertical */
+                position: absolute;
+                font-weight: bold;
+                text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+                cursor: pointer;
+                z-index: 1;
+            }
+            textarea {
+                position: absolute;
+                background: none;
+                padding: 0;
+                margin: 0;
+                outline-width: 0;
+                overflow: hidden;
+                z-index: 1;
+            }
+        }
+        .vjs-drawing-ctrl {
+            .vjs-control {
+                cursor: pointer;
+            }
+            &>input[type="color"] {
+                background-color: rgba(0, 0, 0, 0);
+                border: 0;
+                padding-left: 3px;
+                height: 2em;
+            }
+            &>input[type="number"] {
+                background-color: rgba(0, 0, 0, 0);
+                border: 0;
+                color: #ccc;
+                width: 40px;
+                height: 2em;
+            }
+            &>.vjs-button {
+                display: flex;
+                justify-content: center;
+                /* align horizontal */
+                align-items: center;
+                /* align vertical */
+                &:hover {
+                    text-shadow: 0 0 1em white;
+                }
+            }
+            &>.vjs-scale {
+                display: flex;
+                justify-content: center;
+                /* align horizontal */
+                align-items: center;
+                /* align vertical */
+                position: relative;
+                height: 3em;
+                width: 4em;
+                float: right;
+            }
+        }
+        .vjs-tool-active {
+            color: green;
+        }
+        .vjs-default-skin {
+            .vjs-snapshot-button {
+                @extend %icon_camera;
+                float: right;
+                cursor: pointer;
+            }
+            .vjs-drawing-brush {
+                @extend %icon_draw_paintbrush;
+            }
+            .vjs-drawing-rect {
+                @extend %icon_input;
+            }
+            .vjs-drawing-crop {
+                @extend %icon_slice;
+            }
+            .vjs-drawing-text {
+                @extend %icon_text;
+            }
+            .vjs-drawing-eraser {
+                @extend %icon_clean;
+            }
+            .vjs-drawing-scaler {
+                @extend %icon_fullscreen_box;
+                margin-left: 20px;
+            }
+            .vjs-drawing-close {
+                @extend %icon_close;
+                float: right;
+            }
+        }
+        // ===============snapshot end===============
     }
-}
