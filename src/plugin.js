@@ -720,11 +720,38 @@ const markers = function(options) {
 		var marker = markersList[currentMarkerIndex];
 		var markerTime = setting.markerTip.time(marker);
 		var ct = currentTime - markerTime;
-
-		if (ct >= 0 && ct < 1 && fx != currentMarkerIndex) {
-			fx = currentMarkerIndex;
-			lt = currentTime + setting.breakOverlay.displayTime;
-		}
+		
+		// if (overlayIndex == -1) {
+		// 	// fx = currentMarkerIndex;
+		// 	if(fx != currentMarkerIndex && lt == 0){
+		// 		lt = currentTime + setting.breakOverlay.displayTime;
+		// 		fx = currentMarkerIndex;
+		// 	}
+		// 	// else if(lt==0){
+		// 	// 	fx = -1;
+		// 	// }
+		// 	//fx = currentMarkerIndex == markersList.length-1 ? -1 : currentMarkerIndex;
+		// }
+		// if(currentTime >= markerTime && currentTime <= markerTime + setting.breakOverlay.displayTime){
+		// 	lt = markerTime + setting.breakOverlay.displayTime;
+		// }
+		// else{
+		// 	lt = currentTime + setting.breakOverlay.displayTime;
+		// }
+		lt = markerTime + setting.breakOverlay.displayTime;
+		//console.log("111lt:%s|cur:%s",lt, currentTime);
+		// if(ct>0 && ct<1 && setting.breakOverlay.displayTime>0 && setting.breakOverlay.displayTime<1){
+		// 	lt = currentTime + setting.breakOverlay.displayTime;
+		// 	console.log("111lt:%s|cur:%s",lt, currentTime);
+		// }else{
+		// 	lt = markerTime + setting.breakOverlay.displayTime;
+		// 	console.log("222lt:%s|cur:%s",lt, currentTime);
+		// }
+		
+		// if(ct<0.5)
+		// 	lt = markerTime + 0.5;
+		// else
+		// 	lt = currentTime + setting.breakOverlay.displayTime;
 
 		if (currentTime >= markerTime &&
 			currentTime <= lt) {
@@ -739,6 +766,10 @@ const markers = function(options) {
 			overlayIndex = -1;
 			breakOverlay.css("visibility", "hidden");
 			lt = 0;
+			// if(currentMarkerIndex == markersList.length-1)
+			// 	fx = -2;
+			// else
+			// 	lt = 0;
 		}
 	}
 
