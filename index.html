@@ -10,8 +10,8 @@
 
 <body>
     <video id="videojs-open-player" class="video-js vjs-default-skin" controls data-setup='{"language":"zh-CN"}'>
-        <!-- <track src="/captions.en.vtt" srclang="en" label="English" default></track> -->
-        <!--  <source src="http://vjs.zencdn.net/v/oceans.mp4" type="video/mp4" res='360' label='SD'>
+        <!-- <track src="/captions.en.vtt" srclang="en" label="English" default></track> 
+          <source src="http://vjs.zencdn.net/v/oceans.mp4" type="video/mp4" res='360' label='SD'>
     <source src="http://vjs.zencdn.net/v/oceans.mp4" type="video/mp4" res='480' label='HD'>
     <source src="http://vjs.zencdn.net/v/oceans.webm" type="video/webm"  res='720' label='LD'>
     <source src="http://vjs.zencdn.net/v/oceans.ogv" type="video/ogg" res='1080' label='FHD'>
@@ -73,11 +73,16 @@
                 src: 'http://vjs.zencdn.net/v/oceans.mp4?HD',
                 type: 'video/mp4',
                 label: '高清',
-                res: '480'
+                res: '720'
             }, {
                 src: 'http://vjs.zencdn.net/v/oceans.mp4?SD',
                 type: 'video/mp4',
                 label: '标清',
+                res: '480'
+            }, {
+                src: 'http://vjs.zencdn.net/v/oceans.mp4?LD',
+                type: 'video/mp4',
+                label: '流畅',
                 res: '360'
             }]);
             // Switch Resolution Event
@@ -92,7 +97,7 @@
             player.markers({
                 breakOverlay: {
                     display: true,
-                    displayTime: 1,
+                    displayTime: 0.2,
                     text: function(marker) {
                         return marker.overlayText;
                     },
@@ -110,19 +115,19 @@
                     'background-color': '#fff'
                 },
                 markers: [{
-                    time: 9,
+                    time: 3.23,
                     text: "本节特性：<br />前端自动化流程的构建<br />与流程自动化测试流程<br />持续集成",
                     overlayText: "<button onclick='player.play();'>关闭</button>"
                 }, {
-                    time: 16,
+                    time: 6.12,
                     text: "本节特性：<br />前端自动化流程的构建与流程自动化测试流程持续集成",
                     overlayText: "<button onclick='player.play();'>关闭</button>"
                 }, {
-                    time: 23,
+                    time: 11.32,
                     text: "本节特性：前端自动化流程的构建与流程自动化测试流程持续集成",
                     overlayText: "<button onclick='player.play();'>关闭</button>"
                 }, {
-                    time: 28,
+                    time: 15.23,
                     text: "本节特性：前端自动化流程的构建与流程自动化测试流程持续集成",
                     overlayText: "<button onclick='player.play();'>关闭</button>"
                 }],
@@ -131,7 +136,7 @@
                     var ss = player.snapshot.getPlayerSnapshot(player);
                     //$("#snapshot").html(ss);
                     // var bb = player.snapshot.restorePlayerSnapshot(player, ss);
-                    console.log(ss);
+                    // console.log(ss);
                     // console.log(marker);
                 }
             });
@@ -143,10 +148,17 @@
                 xrepeat: 0,
                 opacity: 0.5,
             });
+            player.waterMark({
+                file: 'Logo.png',
+                xpos: 0,
+                ypos: 0,
+                xrepeat: 0,
+                opacity: 0.5,
+            });
             player.addRemoteTextTrack({
                 label: "English",
                 srclanguage: "en",
-                default: true,
+                default: false,
                 id: "1",
                 src: "/captions.en.vtt"
             });
