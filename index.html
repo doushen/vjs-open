@@ -33,44 +33,48 @@
         </li>
     </ul>
     <script src="/node_modules/jquery/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+    <script src="/node_modules/video.js/dist/ie8/videojs-ie8.min.js"></script>
+    <![endif]-->
     <script src="/node_modules/video.js/dist/video.js"></script>
+    <script type="text/javascript">
+    videojs.options.flash.swf = '/node_modules/videojs-swf/dist/video-js.swf';
+    </script>
     <script src="/dist/videojs-open.js"></script>
     <script src="/dist/lang/zh-CN.js"></script>
-    <script>
-    (function(window, videojs) {
-        videojs.options.flash.swf = '../node_modules/videojs-swf/dist/video-js.swf';
-        var player = window.player = videojs('videojs-open-player', {
+    <script type="text/javascript">
+    videojs.options.flash.swf = '/node_modules/videojs-swf/dist/video-js.swf';
+    var player = window.player = videojs('videojs-open-player', {
             controls: true,
+            duration:5,
             plugins: {
-                videoJsResolutionSwitcher: {
+                videoJsResolutionSwitcher: {//初始化分辨率
                     ui: true,
-                    default: '480',
+                    "default": '480',
                     dynamicLabel: true
                 },
-                disableProgress: {
+                disableProgress: {//初始化禁用滚动条拖动
                     autoDisable: false
                 },
-                waterMark: {
+                waterMark: {//初始化水印
                     file: 'Logo.png',
                     xpos: 0,
                     ypos: 100,
                     xrepeat: 0,
                     opacity: 0.5,
                 },
-                // record: {
-                //     image: true,
-                //     audio: false,
-                //     video: true,
-                //     maxLength: 5,
-                //     debug: true
-                // }
+                recordPoint: {
+                  duration:5
+                }
             }
         }, function() {
             var player = this;
             window.player = player;
-            // Add dynamically sources via updateSrc method
+            // 设置缩略图
+            player.poster("http://vjs.zencdn.net/v/oceans.png");
+            // 更新视频分辨率
             player.updateSrc([{
-                src: '/oceans.mp4?HD',
+                src: 'http://vjs.zencdn.net/v/oceans.mp4',
                 type: 'video/mp4',
                 label: '高清',
                 res: '720'
@@ -80,21 +84,24 @@
                 label: '标清',
                 res: '480'
             }, {
-                src: '/oceans.mp4?LD',
+                src: 'http://vjs.zencdn.net/v/oceans.mp4',
                 type: 'video/mp4',
                 label: '流畅',
                 res: '360'
             }]);
-            // Switch Resolution Event
+            // 切换分辨率事假
             player.on('resolutionchange', function(e) {
                 console.info('Source changed to %s', player.src())
             });
-            // Init videoJsResolutionSwitcher
+            player.on('timeUpdate', function(e) {
+                console.info("trigger:%s,percent:%s",player.currentTime(),player.currentTime()/player.duration());
+            });
+            // 初始化分辨率控件
             player.videoJsResolutionSwitcher();
-            // disableProgress
+            // 禁用、启用滚动条拖动
             player.disableProgress.disable();
             player.disableProgress.enable();
-            // make marks
+            // 创建打点数据
             player.markers({
                 breakOverlay: {
                     display: true,
@@ -104,7 +111,7 @@
                     },
                     style: {
                         'width': '100%',
-                        'height': '100%',
+                        'height': 'calc(100% - 36px)',
                         'background-color': 'rgba(0,0,0,0.7)',
                         'color': 'white',
                         'font-size': '17px'
@@ -117,7 +124,7 @@
                 },
                 markers: [{
                     time: 3.23,
-                    text: "本节特性：<br />前端自动化流程的构建<br />与流程自动化测试流程<br />持续集成1111111111111",
+                    text: "本节特性：<img style='width:100%;' src='http://vjs.zencdn.net/v/oceans.png' /><br />前端自动化流程的构建<br />与流程自动化测试流程<br />持续集成1111111111111",
                     overlayText: "1111111<button onclick='player.play();'>关闭</button>"
                 }, {
                     time: 6.12,
@@ -141,7 +148,7 @@
                     // console.log(marker);
                 }
             });
-            // make watermark
+            // 添加logo或水印
             player.waterMark({
                 file: 'Logo.png',
                 xpos: 100,
@@ -149,6 +156,7 @@
                 xrepeat: 0,
                 opacity: 0.5,
             });
+            // 添加logo或水印
             player.waterMark({
                 file: 'Logo.png',
                 xpos: 0,
@@ -156,6 +164,7 @@
                 xrepeat: 0,
                 opacity: 0.5,
             });
+            // 添加logo或水印
             player.waterMark({
                 file: 'Logo.png',
                 xpos: 100,
@@ -163,26 +172,25 @@
                 xrepeat: 0,
                 opacity: 0.5,
             });
+            // 添加字幕
             player.addRemoteTextTrack({
                 label: "English",
                 srclanguage: "en",
-                default: true,
+                "default": true,
                 id: "1",
                 src: "/captions.en.vtt"
             });
+            // 添加字幕
             player.addRemoteTextTrack({
                 label: "中文",
                 srclanguage: "en",
-                default: false,
-                id: "1",
+                "default": false,
+                id: "2",
                 src: "/captions.en.vtt"
             });
-            // <track src="/captions.en.vtt" srclang="en" label="English" default></track>
-            // snapshot
-            // player.snapshot();
         });
         player.open();
-    }(window, window.videojs));
+    
     </script>
 </body>
 

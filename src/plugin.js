@@ -17,6 +17,7 @@ const defaults = {};
  */
 const onPlayerReady = (player, options) => {
 	player.addClass('vjs-open');
+	
 
 };
 
@@ -1688,6 +1689,24 @@ var snapshot = {
 	}
 };
 
+const recordPoint = function(options) {
+	var settings = videojs.mergeOptions(defaults, options),player = this;
+	this.on("timeupdate", playerTimeUpdate);
+	function playerTimeUpdate() {
+		//console.log(settings.duration/100,percent);
+		var percent = player.currentTime()/player.duration();
+		if(percent>=settings.duration/100){
+			// console.log(settings.isDuration);
+			if(!settings.isDuration || settings.isDuration == undefined){
+				settings.isDuration = true;
+				player.trigger('timeUpdate');
+			}
+		}else{
+			settings.isDuration = false;
+		}
+	}
+};
+
 // Register the plugin with video.js.
 videojs.plugin('open', open);
 videojs.plugin('videoJsResolutionSwitcher', videoJsResolutionSwitcher);
@@ -1695,6 +1714,7 @@ videojs.plugin('disableProgress', disableProgress);
 videojs.plugin('markers', markers);
 videojs.plugin('waterMark', waterMark);
 videojs.plugin('snapshot', snapshot);
+videojs.plugin('recordPoint', recordPoint);
 
 // Include the version number.
 open.VERSION = '__VERSION__';
