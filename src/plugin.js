@@ -1690,20 +1690,41 @@ var snapshot = {
 };
 
 const recordPoint = function(options) {
-	var settings = videojs.mergeOptions(defaults, options),player = this;
+	var settings = videojs.mergeOptions(defaults, options),player = this,timeTemp;
 	this.on("timeupdate", playerTimeUpdate);
+	this.on("ended",playerEnded);
+
+
 	function playerTimeUpdate() {
-		//console.log(settings.duration/100,percent);
-		var percent = player.currentTime()/player.duration();
-		if(percent>=settings.duration/100){
-			// console.log(settings.isDuration);
-			if(!settings.isDuration || settings.isDuration == undefined){
-				settings.isDuration = true;
-				player.trigger('timeUpdate');
+		var cur = parseInt(player.currentTime());
+		var isPaused = player.paused();
+		if(cur != timeTemp){
+			timeTemp = cur;
+			//console.log(cur%settings.secPerTime);
+			if(cur==0){
+				player.trigger('timeUpdate',{type: 'start', current: player.currentTime(), total: player.duration()});
 			}
-		}else{
-			settings.isDuration = false;
+			if(settings.secPerTime>0){
+				if(cur % settings.secPerTime==0){
+					player.trigger('timeUpdate',{type: 'tick', current: player.currentTime(), total: player.duration()});
+				}
+			}
+			if(settings.finishPct>=0 && settings.finishPct<=100){
+				var percent = player.currentTime()/player.duration();
+				if(percent>=settings.finishPct/100){
+					if(!settings.isFinish || settings.isFinish == undefined){
+						settings.isFinish = true;
+						player.trigger('timeUpdate',{type: 'finish', current: player.currentTime(), total: player.duration()});
+					}
+				}else{
+					settings.isFinish = false;
+				}
+			}
 		}
+	};
+
+	function playerEnded() {
+		player.trigger('timeUpdate',{type: 'ended', current: player.currentTime(), total: player.duration()});
 	}
 };
 

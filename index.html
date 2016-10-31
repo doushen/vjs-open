@@ -46,7 +46,6 @@
     videojs.options.flash.swf = '/node_modules/videojs-swf/dist/video-js.swf';
     var player = window.player = videojs('videojs-open-player', {
             controls: true,
-            duration:5,
             plugins: {
                 videoJsResolutionSwitcher: {//初始化分辨率
                     ui: true,
@@ -64,7 +63,8 @@
                     opacity: 0.5,
                 },
                 recordPoint: {
-                  duration:5
+                  finishPct:10,
+                  secPerTime:5
                 }
             }
         }, function() {
@@ -93,7 +93,8 @@
             player.on('resolutionchange', function(e) {
                 console.info('Source changed to %s', player.src())
             });
-            player.on('timeUpdate', function(e) {
+            player.on('timeUpdate', function(e,data) {
+                console.info(data);
                 console.info("trigger:%s,percent:%s",player.currentTime(),player.currentTime()/player.duration());
             });
             // 初始化分辨率控件
@@ -142,6 +143,7 @@
                 onMarkerReached: function(marker) {
                     player.pause();
                     var ss = player.snapshot.getPlayerSnapshot(player);
+                    // console.log(ss);
                     //$("#snapshot").html(ss);
                     // var bb = player.snapshot.restorePlayerSnapshot(player, ss);
                     // console.log(ss);
