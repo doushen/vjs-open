@@ -385,7 +385,7 @@ const videoJsResolutionSwitcher = function(options) {
 		var selection = this.player_.currentResolution();
 		this.selected(this.options_.label === selection.label);
 	};
-	MenuItem.registerComponent('ResolutionMenuItem', ResolutionMenuItem);
+	// MenuItem.registerComponent('ResolutionMenuItem', ResolutionMenuItem);
 
 	/*
 	 * Resolution menu button
@@ -437,7 +437,7 @@ const videoJsResolutionSwitcher = function(options) {
 	ResolutionMenuButton.prototype.buildCSSClass = function() {
 		return MenuButton.prototype.buildCSSClass.call(this) + ' vjs-resolution-button';
 	};
-	MenuButton.registerComponent('ResolutionMenuButton', ResolutionMenuButton);
+	// MenuButton.registerComponent('ResolutionMenuButton', ResolutionMenuButton);
 };
 
 /**

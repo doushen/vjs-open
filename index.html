@@ -3,9 +3,15 @@
 
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <title>videojs-open Demo</title>
     <link href="/node_modules/video.js/dist/video-js.css" rel="stylesheet">
     <link href="/dist/videojs-open.css" rel="stylesheet">
+    
+    <script src="//vjs.zencdn.net/ie8/1.1.1/videojs-ie8.min.js"></script>
+    <!--[if lt IE 9]>
+    <script src="/node_modules/video.js/dist/ie8/videojs-ie8.min.js"></script>
+    <![endif]-->
 </head>
 
 <body>
@@ -18,8 +24,8 @@
     <p class="vjs-no-js">
       请升级浏览器来播放
       <a href="http://videojs.com/html5-video-support/" target="_blank" class="vjs-hidden" hidden="hidden">HTML5 视频</a>
-    </p>
-    -->
+    </p> -->
+    
     </video>
     <ul>
         <li>
@@ -33,17 +39,66 @@
         </li>
     </ul>
     <script src="/node_modules/jquery/jquery.min.js"></script>
-    <!--[if lt IE 9]>
-    <script src="/node_modules/video.js/dist/ie8/videojs-ie8.min.js"></script>
-    <![endif]-->
-    <script src="/node_modules/video.js/dist/video.js"></script>
+    
+    <script src="http://vjs.zencdn.net/5.8.8/video.js"></script>
     <script type="text/javascript">
-    videojs.options.flash.swf = '/node_modules/videojs-swf/dist/video-js.swf';
+    //videojs.options.flash.swf = '/node_modules/video.js/dist/video-js.swf';
     </script>
     <script src="/dist/videojs-open.js"></script>
     <script src="/dist/lang/zh-CN.js"></script>
     <script type="text/javascript">
-    videojs.options.flash.swf = '/node_modules/videojs-swf/dist/video-js.swf';
+    //videojs.options.flash.swf = '/node_modules/videojs-swf/dist/video-js.swf';
+    videojs.options.flash.swf = '/node_modules/video.js/dist/video-js.swf';
+
+    // (function(window, videojs) {
+    //   var player = window.player = videojs('videojs-open-player',{
+    //         controls: true,
+    //         plugins: {
+    //             videoJsResolutionSwitcher: {//初始化分辨率
+    //                 ui: true,
+    //                 "default": '480',
+    //                 dynamicLabel: true
+    //             },
+    //             disableProgress: {//初始化禁用滚动条拖动
+    //                 autoDisable: false
+    //             },
+    //             waterMark: {//初始化水印
+    //                 file: 'Logo.png',
+    //                 xpos: 0,
+    //                 ypos: 100,
+    //                 xrepeat: 0,
+    //                 opacity: 0.5,
+    //             },
+    //             recordPoint: {
+    //               finishPct:10,
+    //               secPerTime:5
+    //             }
+    //         }
+    //     });
+    //   player.open();
+    //    // 设置缩略图
+    //         player.poster("http://vjs.zencdn.net/v/oceans.png");
+    //         // 更新视频分辨率
+    //         player.updateSrc([{
+    //             src: 'http://vjs.zencdn.net/v/oceans.mp4',
+    //             type: 'video/mp4',
+    //             label: '高清',
+    //             res: '720'
+    //         }, {
+    //             src: '/oceans.mp4?SD',
+    //             type: 'video/mp4',
+    //             label: '标清',
+    //             res: '480'
+    //         }, {
+    //             src: 'http://vjs.zencdn.net/v/oceans.mp4',
+    //             type: 'video/mp4',
+    //             label: '流畅',
+    //             res: '360'
+    //         }]);
+    // }(window, window.videojs));
+
+
+
     var player = window.player = videojs('videojs-open-player', {
             controls: true,
             plugins: {
@@ -70,6 +125,7 @@
         }, function() {
             var player = this;
             window.player = player;
+            player.open();
             // 设置缩略图
             player.poster("http://vjs.zencdn.net/v/oceans.png");
             // 更新视频分辨率
@@ -191,7 +247,7 @@
                 src: "/captions.en.vtt"
             });
         });
-        player.open();
+        
     
     </script>
 </body>
